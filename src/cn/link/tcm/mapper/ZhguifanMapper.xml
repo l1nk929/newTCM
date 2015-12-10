@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.ZhguifanMapper">
+
+<!-- 		private int id;
+	private String zhenghou_name; -->
+<select id="findZhguifanById" parameterType="int" resultType="zhguifan">
+		SELECT id,zhenghou_name FROM ZHGUIFAN WHERE id=#{value}
+</select>
+
+
+<select id="findAllZhguifan" resultType="zhguifan">
+	SELECT id,zhenghou_name FROM zhguifan;
+</select>
+
+<insert id="addZhguifan" parameterType="zhguifan">
+<selectKey keyProperty="id" order="AFTER" resultType="int">
+	SELECT LAST_INSERT_ID()
+</selectKey>
+	INSERT INTO zhguifan(id,zhenghou_name) value(#{id},#{zhenghou_name})
+</insert>
+
+<update id="updateZhguifanZhenghouName" parameterType="zhguifan">
+	update zhguifan set zhenghou_name=#{zhenghou_name} where id=#{id}
+</update>
+
+<delete id="deleteZhguifanById" parameterType="int">
+	delete from zhguifan where id=#{value}
+</delete>
+
+</mapper>

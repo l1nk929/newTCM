@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.FormulaTemplateMapper">
+
+<!-- 			private int id;
+	private String source_detail;
+	private int source_id;
+	private String zhifadetail;
+	private String formula_detail;  -->
+<select id="getFormulaTemplate" resultType="formulaTemplate">
+		SELECT zhengzhuang zzStr,zhenghou zhStr,zhifa zhifaStr,CONCAT(zhang,'，',jie) sourceStr FROM neikexue;
+</select>
+
+<select id="getFormulaTemplateFromFangjixue" resultType="formulaTemplate">
+		SELECT zhuzhi zzStr,zhuzhi zhStr,gongyong zhifaStr,CONCAT(xuhao,'*',laiyuan,'，方剂名：',fangjiming) FROM fangjixue;
+</select>
+
+<insert id="insertFormulaVoInFormula" parameterType="formulaVo">
+<selectKey keyProperty="id" order="AFTER" resultType="int">
+	SELECT LAST_INSERT_ID()
+</selectKey>
+	INSERT INTO formula(source_detail,source_id,zhifadetail,formula_detail) value(#{source_detail},#{source_id},#{zhifadetail},#{formula_detail})
+</insert>
+
+<insert id="insertFormulaVoInFormulazh" parameterType="formulaVo">
+	INSERT INTO formula_zhall(formula_id,zhall_id) value(#{id},#{zhall_id})
+</insert>
+
+<insert id="insertFormulaVoInFormulazz" parameterType="formulaVo">
+	INSERT INTO formula_zzall(formula_id,zzall_id) value(#{id},#{zzall_id})
+</insert>
+
+<select id="findAllFormulaVo" resultType="formulaVo">
+		SELECT id,source_detail,source_id,zhifadetail,formula_detail from formula
+</select>
+
+<select id="findZzidByFormulaId" resultType="int" parameterType="int">
+		SELECT zzall_id from formula_zzall where formula_id=#{value}
+</select>
+
+<select id="findZhidByFormulaId" resultType="int" parameterType="int">
+		SELECT zhall_id from formula_zhall where formula_id=#{value}
+</select>
+
+</mapper>

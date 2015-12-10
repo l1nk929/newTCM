@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.ZhattrallMapper">
+
+<!-- 			 * private int id;
+	private String zhattr_name;
+	private String zhattr_dependency;
+	private int parent_id;
+	private String code;
+	private int level; -->
+<select id="findZhattrallById" parameterType="int" resultType="zhattrall">
+		SELECT id,zhattr_name,zhattr_dependency,parent_id,code,level FROM zhattrall WHERE id=#{value}
+</select>
+
+<insert id="addZhattrall" parameterType="zhattrall">
+<selectKey keyProperty="id" order="AFTER" resultType="int">
+	SELECT LAST_INSERT_ID()
+</selectKey>
+	INSERT INTO zhattrall(id,zhattr_name,zhattr_dependency,parent_id,level) value(#{id},#{zhattr_name},#{zhattr_dependency},#{parent_id},#{level})
+</insert>
+
+
+
+
+<insert id="addZhattrallWithNullParent" parameterType="zhattrall">
+<selectKey keyProperty="id" order="AFTER" resultType="int">
+	SELECT LAST_INSERT_ID()
+</selectKey>
+	INSERT INTO zhattrall(id,zhattr_name,zhattr_dependency,level) value(#{id},#{zhattr_name},#{zhattr_dependency},#{level})
+</insert>
+
+<select id="findZhattrsByParentId" parameterType="int" resultType="zhattrall">
+	SELECT id,zhattr_name,zhattr_dependency,parent_id,code,level FROM zhattrall where parent_id=#{value};
+</select>
+
+
+
+<select id="findAllZhattrall"  resultType="zhattrall">
+	SELECT id,zhattr_name,zhattr_dependency,parent_id,code,level FROM zhattrall;
+</select>
+
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.ZzallZzguifanVoMapper">
+
+<!-- 	private int id;
+	private String zhengzhuang_name;
+	private int source_id;
+	private int type;
+	
+	private List<Zzguifan> list;
+	 -->
+<resultMap type="zzallZzguifanVo" id="zzallZzguifanVoMap">
+	<id column="id" property="id"/>
+	<result column="zhengzhuang_name" property="zhengzhuang_name"/>
+	<result column="source_id" property="source_id"/>
+	<result column="type" property="type"/>
+	<collection property="list" ofType="zzguifan">
+		<id column="zzguifan_id" property="id"/>
+		<result column="zzguifan_zhengzhuang_name" property="zhengzhuang_name"/>
+	</collection>
+
+</resultMap>
+
+	 
+<select id="findZzallZzguifanVoById" parameterType="int" resultMap="zzallZzguifanVoMap">
+		SELECT zzall.id id,zzall.zhengzhuang_name zhengzhuang_name,
+		zzall.source_id source_id,zzall.type type,zzguifan.id zzguifan_id,
+		zzguifan.zhengzhuang_name zzguifan_zhengzhuang_name 
+		FROM ZZALL 
+		left outer join zzall_zzguifan on zzall.id=zzall_zzguifan.zzall_id
+		left outer join zzguifan on zzall_zzguifan.zzguifan_id=zzguifan.id
+		WHERE zzall.id=#{value};
+</select>
+
+<delete id="deleteZzallZzguifanVo" parameterType="zzallZzguifanVo">
+	delete from zzall_zzguifan where zzall_id=#{id}
+</delete>
+
+
+<delete id="deleteByZzallIdZzguifanId" parameterType="zzall_Zzguifan">
+	delete from zzall_zzguifan where zzall_id=#{zzall_id} and zzguifan_id=#{zzguifan_id}
+</delete>
+	
+	
+<insert id="addZzallZzguifanVo" parameterType="zzallZzguifanVo">
+	INSERT INTO zzall_zzguifan(zzall_id,zzguifan_id) 
+		VALUES
+		<foreach  collection="list" item="item" index="index" separator="," >
+		(#{id},#{item.id})
+		 </foreach>  
+
+</insert>
+
+</mapper>

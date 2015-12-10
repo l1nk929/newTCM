@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.ZhguifanZhattrVoMapper">
+
+<!-- 	
+	 -->
+<resultMap type="zhguifanZhattrVo" id="zhguifanZhattrVoMap">
+	<id column="id" property="id"/>
+	<result column="zhenghou_name" property="zhenghou_name"/>
+	<collection property="list" ofType="zhattrall">
+		<id column="zhattrall_id" property="id"/>
+		<result column="zhattr_name" property="zhattr_name"/>
+		<result column="zhattr_dependency" property="zhattr_dependency"/>
+		<result column="parent_id" property="parent_id"/>
+		<result column="code" property="code"/>
+		<result column="level" property="level"/>
+	</collection>
+
+</resultMap>
+
+	 
+<select id="findZhguifanZhattrVoById" parameterType="int" resultMap="zhguifanZhattrVoMap">
+		SELECT zhguifan.id id,zhguifan.zhenghou_name zhenghou_name,
+		zhattrall.id zhattrall_id,zhattrall.zhattr_name zhattr_name,zhattrall.zhattr_dependency zhattr_dependency,
+		zhattrall.parent_id parent_id,zhattrall.code code,zhattrall.level level
+		FROM zhguifan 
+		left outer join zhguifan_zhattr on zhguifan.id=zhguifan_zhattr.zhguifan_id
+		left outer join zhattrall on zhguifan_zhattr.zhattr_id=zhattrall.id
+		WHERE zhguifan.id=#{value};
+</select>
+
+<delete id="deleteZhguifanZhattrVo" parameterType="zhguifanZhattrVo">
+	delete from zhguifan_zhattr where zhguifan_id=#{id}
+</delete>
+
+
+<delete id="deleteZhguifanZhattrById" parameterType="zhguifan_Zhattr">
+	delete from zhguifan_zhattr where zhguifan_id=#{zhguifan_id} and zhattr_id=#{zhattr_id}
+</delete>
+	
+	
+<insert id="addZhguifanZhattrVo" parameterType="zhguifanZhattrVo">
+	INSERT INTO zhguifan_zhattr(zhguifan_id,zhattr_id) 
+		VALUES
+		<foreach  collection="list" item="item" index="index" separator="," >
+		(#{id},#{item.id})
+		 </foreach>  
+
+</insert>
+
+<select id="findZhguifanZhattrById" parameterType="zhguifan_Zhattr" resultType="zhguifan_Zhattr">
+	select id,zhguifan_id,zhattr_id from zhguifan_zhattr where zhguifan_id=#{zhguifan_id} and zhattr_id=#{zhattr_id}
+</select>
+
+<insert id="addZhguifanZhattrById" parameterType="zhguifan_Zhattr">
+	INSERT INTO zhguifan_zhattr(zhguifan_id,zhattr_id) 
+		VALUES(#{zhguifan_id},#{zhattr_id})
+</insert>
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.ZzallMapper">
+
+<!-- 	private int id;
+	private String zhengzhuang_name;
+	private int source_id;
+	private int type; -->
+<select id="findZzallById" parameterType="int" resultType="zzall">
+		SELECT id,zhengzhuang_name,source_id,type FROM ZZALL WHERE id=#{value}
+</select>
+
+<select id="findAllZzall" resultType="zzall">
+		SELECT id,zhengzhuang_name,source_id,type FROM ZZALL
+</select>
+
+<update id="updateZzallType" parameterType="zzall">
+	update zzall set type=#{type} where id=#{id}
+</update>
+
+<select id="findAllZzallByTypeAndPage" parameterType="zzallPageVo" resultType="zzall">
+		SELECT id,zhengzhuang_name,source_id,type FROM ZZALL where type=#{type} limit #{page_no},#{page_total}
+</select>
+
+</mapper>

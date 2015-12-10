@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.SourceMapper">
+
+<!-- 	private int id;
+	private String source_name;
+	private String type;
+	private int sub_id;-->
+<select id="findSourceById" parameterType="int" resultType="source">
+		SELECT id,source_name,type,sub_id FROM source WHERE id=#{value}
+</select>
+
+
+
+</mapper>

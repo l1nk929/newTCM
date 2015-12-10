@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.ZzguifanAttrVoMapper">
+
+<!-- 	private int id;
+	private String zhengzhuang_name;
+	
+	private List<Attrall> list;;
+	
+	private int id;
+	private String attr_name;
+	private String attr_dependency;
+	private int parent_id;
+	private String code;
+	private int level;
+	 -->
+<resultMap type="zzguifanAttrVo" id="zzguifanAttrVoMap">
+	<id column="id" property="id"/>
+	<result column="zhengzhuang_name" property="zhengzhuang_name"/>
+	<collection property="list" ofType="attrall">
+		<id column="attrall_id" property="id"/>
+		<result column="attr_name" property="attr_name"/>
+		<result column="attr_dependency" property="attr_dependency"/>
+		<result column="parent_id" property="parent_id"/>
+		<result column="code" property="code"/>
+		<result column="level" property="level"/>
+	</collection>
+
+</resultMap>
+
+	 
+<select id="findZzguifanAttrVoById" parameterType="int" resultMap="zzguifanAttrVoMap">
+		SELECT zzguifan.id id,zzguifan.zhengzhuang_name zhengzhuang_name,
+		attrall.id attrall_id,attrall.attr_name attr_name,attrall.attr_dependency attr_dependency,
+		attrall.parent_id parent_id,attrall.code code,attrall.level level
+		FROM zzguifan 
+		left outer join zzguifan_attr on zzguifan.id=zzguifan_attr.zzguifan_id
+		left outer join attrall on zzguifan_attr.attr_id=attrall.id
+		WHERE zzguifan.id=#{value};
+</select>
+
+<delete id="deleteZzguifanAttrVo" parameterType="zzguifanAttrVo">
+	delete from zzguifan_attr where zzguifan_id=#{id}
+</delete>
+
+
+<delete id="deleteZzguifanAttrById" parameterType="zzguifan_Attr">
+	delete from zzguifan_attr where zzguifan_id=#{zzguifan_id} and attr_id=#{attr_id}
+</delete>
+	
+	
+<insert id="addZzguifanAttrVo" parameterType="zzguifanAttrVo">
+	INSERT INTO zzguifan_attr(zzguifan_id,attr_id) 
+		VALUES
+		<foreach  collection="list" item="item" index="index" separator="," >
+		(#{id},#{item.id})
+		 </foreach>  
+
+</insert>
+
+<select id="findZzguifanAttrById" parameterType="zzguifan_Attr" resultType="zzguifan_Attr">
+	select id,zzguifan_id,attr_id from zzguifan_attr where zzguifan_id=#{zzguifan_id} and attr_id=#{attr_id}
+</select>
+
+<insert id="addZzguifanAttrById" parameterType="zzguifanAttrVo">
+	INSERT INTO zzguifan_attr(zzguifan_id,attr_id) 
+		VALUES(#{zzguifan_id},#{attr_id})
+</insert>
+
+</mapper>

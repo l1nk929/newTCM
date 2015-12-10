@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.link.tcm.mapper.AttrallMapper">
+
+<!-- 			 * private int id;
+	private String attr_name;
+	private String attr_dependency;
+	private int parent_id;
+	private String code;
+	private int level; -->
+<select id="findAttrallById" parameterType="int" resultType="attrall">
+		SELECT id,attr_name,attr_dependency,parent_id,code,level FROM attrall WHERE id=#{value}
+</select>
+
+<insert id="addAttrall" parameterType="attrall">
+<selectKey keyProperty="id" order="AFTER" resultType="int">
+	SELECT LAST_INSERT_ID()
+</selectKey>
+	INSERT INTO attrall(id,attr_name,attr_dependency,parent_id,level) value(#{id},#{attr_name},#{attr_dependency},#{parent_id},#{level})
+</insert>
+
+
+
+
+<insert id="addAttrallWithNullParent" parameterType="attrall">
+<selectKey keyProperty="id" order="AFTER" resultType="int">
+	SELECT LAST_INSERT_ID()
+</selectKey>
+	INSERT INTO attrall(id,attr_name,attr_dependency,level) value(#{id},#{attr_name},#{attr_dependency},#{level})
+</insert>
+
+<select id="findAttrsByParentId" parameterType="int" resultType="attrall">
+	SELECT id,attr_name,attr_dependency,parent_id,code,level FROM attrall where parent_id=#{value};
+</select>
+
+
+
+<select id="findAllAttrall"  resultType="attrall">
+	SELECT id,attr_name,attr_dependency,parent_id,code,level FROM attrall;
+</select>
+
+</mapper>
