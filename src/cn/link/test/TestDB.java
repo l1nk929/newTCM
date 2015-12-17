@@ -53,6 +53,22 @@ DELETE FROM zzall_zzguifan WHERE(zzall_zzguifan.zzall_id,zzall_zzguifan.zzguifan
 		conn2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/union_kde_cm_data?characterEncoding=utf8&user=root&password=123456");
 		stmt1 = conn1.createStatement();
 	}
+	
+	
+	/**
+	 * 重新构建规则
+	 * @throws Exception
+	 */
+	@Test
+	public void reCreateRuleTable() throws Exception{
+		stmt1 = conn2.createStatement();
+		
+		stmt1.execute("DROP TABLE tmp_formula_zz");
+		stmt1.execute("DROP TABLE tmp_formula_zh");
+		stmt1.execute("CREATE TABLE tmp_formula_zz SELECT formula.id formula_id,zzguifan.id zz_id,zzguifan.zhengzhuang_name zzname FROM formula,formula_zzall,zzall_zzguifan,zzguifan WHERE formula.id=formula_zzall.formula_id AND formula_zzall.zzall_id=zzall_zzguifan.zzall_id AND zzall_zzguifan.zzguifan_id=zzguifan.id;");
+		stmt1.execute("CREATE TABLE tmp_formula_zh SELECT formula.id formula_id,zhguifan.id zh_id,zhguifan.zhenghou_name zhname FROM formula,formula_zhall,zhall_zhguifan,zhguifan WHERE formula.id=formula_zhall.formula_id AND formula_zhall.zhall_id=zhall_zhguifan.zhall_id AND zhall_zhguifan.zhguifan_id=zhguifan.id;");
+	
+	}
 	/*
 	@Test
 	public void initCnkiTemp0() throws Exception{

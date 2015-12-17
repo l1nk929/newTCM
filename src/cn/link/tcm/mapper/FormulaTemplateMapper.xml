@@ -12,7 +12,7 @@
 </select>
 
 <select id="getFormulaTemplateFromFangjixue" resultType="formulaTemplate">
-		SELECT zhuzhi zzStr,zhuzhi zhStr,gongyong zhifaStr,CONCAT(xuhao,'*',laiyuan,'，方剂名：',fangjiming) FROM fangjixue;
+		SELECT zhuzhi zzStr,zhuzhi zhStr,gongyong zhifaStr,CONCAT(xuhao,'，',laiyuan,'，方剂名：',fangjiming) sourceStr FROM fangjixue;
 </select>
 
 <insert id="insertFormulaVoInFormula" parameterType="formulaVo">
